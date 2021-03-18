@@ -9,6 +9,13 @@ PYBIND11_MODULE(pyleap, m)
 {
   // CLASSES
 
+  py::class_<Leap::Bone>(m, "Bone")
+    .def("next_joint", &Leap::Bone::nextJoint, py::call_guard<py::gil_scoped_release>())
+    .def("prev_joint", &Leap::Bone::prevJoint, py::call_guard<py::gil_scoped_release>())
+    .def("type", &Leap::Bone::type, py::call_guard<py::gil_scoped_release>())
+    .def("width", &Leap::Bone::width, py::call_guard<py::gil_scoped_release>())
+  ;
+
   py::class_<Leap::Controller>(m, "Controller")
     .def(py::init<>(), py::call_guard<py::gil_scoped_release>())
     .def("frame",
@@ -21,6 +28,7 @@ PYBIND11_MODULE(pyleap, m)
   ;
 
   py::class_<Leap::Finger>(m, "Finger")
+    .def("bone", &Leap::Finger::bone, py::call_guard<py::gil_scoped_release>())
     .def("direction", &Leap::Finger::direction, py::call_guard<py::gil_scoped_release>())
     .def("tip_position", &Leap::Finger::tipPosition, py::call_guard<py::gil_scoped_release>())
     .def("type", &Leap::Finger::type, py::call_guard<py::gil_scoped_release>())
@@ -60,6 +68,14 @@ PYBIND11_MODULE(pyleap, m)
   ;
 
   // ENUMERATIONS
+
+  py::enum_<Leap::Bone::Type>(m, "EBoneType")
+    .value("BT_METACARPAL", Leap::Bone::TYPE_METACARPAL)
+    .value("BT_PROXIMAL", Leap::Bone::TYPE_PROXIMAL)
+    .value("BT_INTERMEDIATE", Leap::Bone::TYPE_INTERMEDIATE)
+    .value("BT_DISTAL", Leap::Bone::TYPE_DISTAL)
+    .export_values()
+  ;
 
   py::enum_<Leap::Finger::Type>(m, "EFingerType")
     .value("FT_THUMB", Leap::Finger::TYPE_THUMB)

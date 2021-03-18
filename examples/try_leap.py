@@ -14,7 +14,11 @@ def main() -> None:
 
                 for j in range(len(hand.fingers())):
                     finger: Finger = hand.fingers()[j]
-                    print(f"Finger {finger.type()}: {finger.tip_position()}, {finger.direction()}")
+                    print(f"  Finger {finger.type()}: {finger.tip_position()}, {finger.direction()}")
+
+                    for k in range(4):
+                        bone: Bone = finger.bone(EBoneType(k))
+                        print(f"    Bone {bone.type()}: {bone.prev_joint()}, {bone.next_joint()}")
 
             print("===")
 
