@@ -3,6 +3,7 @@ from smg.pyleap import *
 
 def main() -> None:
     controller: Controller = Controller()
+
     while True:
         frame: Frame = controller.frame()
         if frame.is_valid():
@@ -10,7 +11,14 @@ def main() -> None:
 
             for i in range(len(frame.hands())):
                 hand: Hand = frame.hands()[i]
-                print(f"Hand {i} has {len(hand.fingers())} fingers")
+
+                hand_name: str = "Hand"
+                if hand.is_left():
+                    hand_name = "Left hand"
+                elif hand.is_right():
+                    hand_name = "Right hand"
+
+                print(f"{hand_name} has {len(hand.fingers())} fingers")
 
                 for j in range(len(hand.fingers())):
                     finger: Finger = hand.fingers()[j]
