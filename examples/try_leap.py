@@ -14,7 +14,7 @@ def main() -> None:
 
                 for j in range(len(hand.fingers())):
                     finger: Finger = hand.fingers()[j]
-                    print(finger.tip_position(), finger.direction())
+                    print(f"Finger {finger.type()}: {finger.tip_position()}, {finger.direction()}")
 
             print("===")
 

@@ -23,6 +23,7 @@ PYBIND11_MODULE(pyleap, m)
   py::class_<Leap::Finger>(m, "Finger")
     .def("direction", &Leap::Finger::direction, py::call_guard<py::gil_scoped_release>())
     .def("tip_position", &Leap::Finger::tipPosition, py::call_guard<py::gil_scoped_release>())
+    .def("type", &Leap::Finger::type, py::call_guard<py::gil_scoped_release>())
   ;
 
   py::class_<Leap::FingerList>(m, "FingerList")
@@ -56,5 +57,16 @@ PYBIND11_MODULE(pyleap, m)
       },
       py::call_guard<py::gil_scoped_release>()
     )
+  ;
+
+  // ENUMERATIONS
+
+  py::enum_<Leap::Finger::Type>(m, "EFingerType")
+    .value("FT_THUMB", Leap::Finger::TYPE_THUMB)
+    .value("FT_INDEX", Leap::Finger::TYPE_INDEX)
+    .value("FT_MIDDLE", Leap::Finger::TYPE_MIDDLE)
+    .value("FT_RING", Leap::Finger::TYPE_RING)
+    .value("FT_PINKY", Leap::Finger::TYPE_PINKY)
+    .export_values()
   ;
 }

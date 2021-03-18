@@ -7,6 +7,7 @@ class Controller:
 class Finger:
 	def direction(self) -> Vector: ...
 	def tip_position(self) -> Vector: ...
+	def type(self) -> EFingerType: ...
 
 class FingerList:
 	def __getitem__(self, idx: int) -> Finger: ...
@@ -29,3 +30,14 @@ class Vector:
 	z: float
 
 	def __repr__(self) -> str: ...
+
+# ENUMERATIONS
+
+class EFingerType(int):
+	pass
+
+FT_THUMB: EFingerType
+FT_INDEX: EFingerType
+FT_MIDDLE: EFingerType
+FT_RING: EFingerType
+FT_PINKY: EFingerType
