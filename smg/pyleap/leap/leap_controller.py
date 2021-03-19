@@ -7,11 +7,12 @@ from .. import leap
 
 
 class LeapController:
-    """TODO"""
+    """A wrapper around the class used to get data from the Leap."""
 
     # CONSTRUCTOR
 
     def __init__(self):
+        """Construct a Leap controller."""
         self.__camera: SimpleCamera = CameraUtil.make_default_camera()
         self.__controller: leap.Controller = leap.Controller()
 
@@ -19,15 +20,32 @@ class LeapController:
 
     @staticmethod
     def from_leap_size(leap_size: float) -> float:
-        # The Leap measures in millimetres, whereas we in metres, so we need to divide the size by 1000.
+        """
+        Convert a Leap size (in millimetres) to one in metres.
+
+        :param leap_size:   The Leap size (in millimetres).
+        :return:            The equivalent size in metres.
+        """
         return leap_size / 1000.0
 
     # PUBLIC METHODS
 
     def frame(self, history: int = 0) -> leap.Frame:
+        """
+        Get a frame of tracking data from the Leap.
+
+        :param history:     How many frames to go back in time.
+        :return:            The frame of tracking data.
+        """
         return self.__controller.frame(history)
 
     def from_leap_direction(self, leap_dir: leap.Vector) -> np.ndarray:
+        """
+        Convert a direction in the Leap coordinate system to one in our coordinate system.
+
+        :param leap_dir:    A direction in the Leap coordinate system.
+        :return:            The equivalent direction in our coordinate system.
+        """
         x, y, z = -self.__camera.u(), -self.__camera.v(), self.__camera.n()
 
         # The Leap coordinate system has x pointing right, y pointing up and z pointing out of the screen, whereas
@@ -36,6 +54,12 @@ class LeapController:
         return leap_dir.x * x - leap_dir.y * y - leap_dir.z * z
 
     def from_leap_position(self, leap_pos: leap.Vector) -> np.ndarray:
+        """
+        Convert a position in the Leap coordinate system to one in our coordinate system.
+
+        :param leap_pos:    A position in the Leap coordinate system.
+        :return:            The equivalent position in our coordinate system.
+        """
         # The Leap measures in millimetres, whereas we measure in metres, so we need to divide by 1000.
         offset: np.ndarray = self.from_leap_direction(leap_pos) / 1000.0
 

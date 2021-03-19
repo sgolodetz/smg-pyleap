@@ -14,12 +14,12 @@ class LeapRenderer:
     # PUBLIC STATIC METHODS
 
     @staticmethod
-    def render_frame(frame: leap.Frame, controller: LeapController) -> None:
+    def render_hands(frame: leap.Frame, controller: LeapController) -> None:
         """
-        TODO
+        Render any hands that were detected in a Leap frame using OpenGL.
 
-        :param frame:       TODO
-        :param controller:  TODO
+        :param frame:       The Leap frame.
+        :param controller:  The Leap controller (used to convert from Leap coordinates to our coordinates).
         """
         for i in range(len(frame.hands())):
             hand: leap.Hand = frame.hands()[i]

@@ -1,14 +1,10 @@
-# noinspection PyPackageRequirements
 import cv2
-# noinspection PyPackageRequirements
 import numpy as np
 import os
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-# noinspection PyPackageRequirements
 import pygame
 
-# noinspection PyPackageRequirements
 from OpenGL.GL import *
 from timeit import default_timer as timer
 from typing import Tuple
@@ -80,9 +76,9 @@ def main() -> None:
                 glColor3f(0.0, 0.0, 0.0)
                 OpenGLUtil.render_voxel_grid([-2, -2, -2], [2, 0, 2], [1, 1, 1], dotted=True)
 
-                # If the current frame from the Leap is valid, render it.
+                # If the current frame from the Leap is valid, render any detected hands.
                 if leap_frame.is_valid():
-                    LeapRenderer.render_frame(leap_frame, leap_controller)
+                    LeapRenderer.render_hands(leap_frame, leap_controller)
 
         # Swap the front and back buffers.
         pygame.display.flip()
