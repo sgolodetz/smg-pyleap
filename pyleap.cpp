@@ -18,7 +18,8 @@ PYBIND11_MODULE(pyleap, m)
 
   py::class_<Leap::Controller>(m, "Controller")
     .def(py::init<>(), py::call_guard<py::gil_scoped_release>())
-    .def("frame",
+    .def(
+      "frame",
       [](Leap::Controller& self, int history)
       {
         return self.frame(history);

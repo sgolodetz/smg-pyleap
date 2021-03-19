@@ -1,16 +1,20 @@
-from smg.pyleap import *
+import numpy as np
+
+from smg.pyleap import leap, LeapController
 
 
 def main() -> None:
-    controller: Controller = Controller()
+    np.set_printoptions(suppress=True)
+
+    controller: LeapController = LeapController()
 
     while True:
-        frame: Frame = controller.frame()
+        frame: leap.Frame = controller.frame()
         if frame.is_valid():
             print(f"Hands: {len(frame.hands())}")
 
             for i in range(len(frame.hands())):
-                hand: Hand = frame.hands()[i]
+                hand: leap.Hand = frame.hands()[i]
 
                 hand_name: str = "Hand"
                 if hand.is_left():
@@ -21,12 +25,16 @@ def main() -> None:
                 print(f"{hand_name} has {len(hand.fingers())} fingers")
 
                 for j in range(len(hand.fingers())):
-                    finger: Finger = hand.fingers()[j]
-                    print(f"  Finger {finger.type()}: {finger.tip_position()}, {finger.direction()}")
+                    finger: leap.Finger = hand.fingers()[j]
+                    fingertip_pos: np.ndarray = controller.from_leap_position(finger.tip_position())
+                    finger_dir: np.ndarray = controller.from_leap_direction(finger.direction())
+                    print(f"  Finger {finger.type()}: {fingertip_pos}, {finger_dir}")
 
                     for k in range(4):
-                        bone: Bone = finger.bone(EBoneType(k))
-                        print(f"    Bone {bone.type()}: {bone.prev_joint()}, {bone.next_joint()}")
+                        bone: leap.Bone = finger.bone(leap.EBoneType(k))
+                        prev_joint: np.ndarray = controller.from_leap_position(bone.prev_joint())
+                        next_joint: np.ndarray = controller.from_leap_position(bone.next_joint())
+                        print(f"    Bone {bone.type()}: {prev_joint}, {next_joint}")
 
             print("===")
 
