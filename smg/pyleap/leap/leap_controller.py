@@ -30,6 +30,16 @@ class LeapController:
 
     # PUBLIC METHODS
 
+    def enable_gesture(self, gesture_type: leap.EGestureType, enable: bool = True) -> None:
+        """
+        TODO
+
+        :param gesture_type:    TODO
+        :param enable:          TODO
+        :return:                TODO
+        """
+        self.__controller.enable_gesture(gesture_type, enable)
+
     def frame(self, history: int = 0) -> leap.Frame:
         """
         Get a frame of tracking data from the Leap.
@@ -64,3 +74,12 @@ class LeapController:
         offset: np.ndarray = self.from_leap_direction(leap_pos) / 1000.0
 
         return self.__camera.p() + offset
+
+    def is_gesture_enabled(self, gesture_type: leap.EGestureType) -> bool:
+        """
+        TODO
+
+        :param gesture_type:    TODO
+        :return:                TODO
+        """
+        return self.__controller.is_gesture_enabled(gesture_type)
