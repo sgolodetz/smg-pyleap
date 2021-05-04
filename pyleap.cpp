@@ -19,6 +19,14 @@ PYBIND11_MODULE(pyleap, m)
   py::class_<Leap::Controller>(m, "Controller")
     .def(py::init<>(), py::call_guard<py::gil_scoped_release>())
     .def(
+      "enable_gesture",
+      [](Leap::Controller& self, Leap::Gesture::Type gesture_type, bool enable)
+      {
+        self.enableGesture(gesture_type, enable);
+      },
+      py::arg("gesture_type"), py::arg("enable") = true, py::call_guard<py::gil_scoped_release>()
+    )
+    .def(
       "frame",
       [](Leap::Controller& self, int history)
       {
@@ -26,6 +34,7 @@ PYBIND11_MODULE(pyleap, m)
       },
       py::arg("history") = 0, py::call_guard<py::gil_scoped_release>()
     )
+    .def("is_gesture_enabled", &Leap::Controller::isGestureEnabled, py::call_guard<py::gil_scoped_release>())
   ;
 
   py::class_<Leap::Finger>(m, "Finger")
@@ -41,8 +50,28 @@ PYBIND11_MODULE(pyleap, m)
   ;
 
   py::class_<Leap::Frame>(m, "Frame")
+    .def(
+      "gestures",
+      static_cast<Leap::GestureList (Leap::Frame::*)() const>(&Leap::Frame::gestures),
+      py::call_guard<py::gil_scoped_release>()
+    )
     .def("hands", &Leap::Frame::hands, py::call_guard<py::gil_scoped_release>())
     .def("is_valid", &Leap::Frame::isValid, py::call_guard<py::gil_scoped_release>())
+  ;
+
+  py::class_<Leap::Gesture>(m, "Gesture")
+    .def("duration", &Leap::Gesture::duration, py::call_guard<py::gil_scoped_release>())
+    .def("hands", &Leap::Gesture::hands, py::call_guard<py::gil_scoped_release>())
+    .def("id", &Leap::Gesture::id, py::call_guard<py::gil_scoped_release>())
+    .def("is_valid", &Leap::Gesture::isValid, py::call_guard<py::gil_scoped_release>())
+    .def("state", &Leap::Gesture::state, py::call_guard<py::gil_scoped_release>())
+    .def("to_string", &Leap::Gesture::toString, py::call_guard<py::gil_scoped_release>())
+    .def("type", &Leap::Gesture::type, py::call_guard<py::gil_scoped_release>())
+  ;
+
+  py::class_<Leap::GestureList>(m, "GestureList")
+    .def("__getitem__", &Leap::GestureList::operator[], py::call_guard<py::gil_scoped_release>())
+    .def("__len__", &Leap::GestureList::count, py::call_guard<py::gil_scoped_release>())
   ;
 
   py::class_<Leap::Hand>(m, "Hand")
@@ -70,6 +99,36 @@ PYBIND11_MODULE(pyleap, m)
     )
   ;
 
+  // GESTURE SUBCLASSES
+
+  py::class_<Leap::CircleGesture, Leap::Gesture>(m, "CircleGesture")
+    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
+    .def("centre", &Leap::CircleGesture::center, py::call_guard<py::gil_scoped_release>())
+    .def("normal", &Leap::CircleGesture::normal, py::call_guard<py::gil_scoped_release>())
+    .def("progress", &Leap::CircleGesture::progress, py::call_guard<py::gil_scoped_release>())
+    .def("radius", &Leap::CircleGesture::radius, py::call_guard<py::gil_scoped_release>())
+  ;
+
+  py::class_<Leap::KeyTapGesture, Leap::Gesture>(m, "KeyTapGesture")
+    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
+    .def("direction", &Leap::KeyTapGesture::direction, py::call_guard<py::gil_scoped_release>())
+    .def("position", &Leap::KeyTapGesture::position, py::call_guard<py::gil_scoped_release>())
+  ;
+
+  py::class_<Leap::ScreenTapGesture, Leap::Gesture>(m, "ScreenTapGesture")
+    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
+    .def("direction", &Leap::ScreenTapGesture::direction, py::call_guard<py::gil_scoped_release>())
+    .def("position", &Leap::ScreenTapGesture::position, py::call_guard<py::gil_scoped_release>())
+  ;
+
+  py::class_<Leap::SwipeGesture, Leap::Gesture>(m, "SwipeGesture")
+    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
+    .def("direction", &Leap::SwipeGesture::direction, py::call_guard<py::gil_scoped_release>())
+    .def("position", &Leap::SwipeGesture::position, py::call_guard<py::gil_scoped_release>())
+    .def("speed", &Leap::SwipeGesture::speed, py::call_guard<py::gil_scoped_release>())
+    .def("start_position", &Leap::SwipeGesture::startPosition, py::call_guard<py::gil_scoped_release>())
+  ;
+
   // ENUMERATIONS
 
   py::enum_<Leap::Bone::Type>(m, "EBoneType")
@@ -86,6 +145,22 @@ PYBIND11_MODULE(pyleap, m)
     .value("FT_MIDDLE", Leap::Finger::TYPE_MIDDLE)
     .value("FT_RING", Leap::Finger::TYPE_RING)
     .value("FT_PINKY", Leap::Finger::TYPE_PINKY)
+    .export_values()
+  ;
+
+  py::enum_<Leap::Gesture::State>(m, "EGestureState")
+    .value("GS_INVALID", Leap::Gesture::STATE_INVALID)
+    .value("GS_START", Leap::Gesture::STATE_START)
+    .value("GS_UPDATE", Leap::Gesture::STATE_UPDATE)
+    .value("GS_STOP", Leap::Gesture::STATE_STOP)
+  ;
+
+  py::enum_<Leap::Gesture::Type>(m, "EGestureType")
+    .value("GT_INVALID", Leap::Gesture::TYPE_INVALID)
+    .value("GT_SWIPE", Leap::Gesture::TYPE_SWIPE)
+    .value("GT_CIRCLE", Leap::Gesture::TYPE_CIRCLE)
+    .value("GT_SCREEN_TAP", Leap::Gesture::TYPE_SCREEN_TAP)
+    .value("GT_KEY_TAP", Leap::Gesture::TYPE_KEY_TAP)
     .export_values()
   ;
 }

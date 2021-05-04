@@ -30,6 +30,15 @@ class LeapController:
 
     # PUBLIC METHODS
 
+    def enable_gesture(self, gesture_type: leap.EGestureType, enable: bool = True) -> None:
+        """
+        Enable or disable reporting of a particular gesture type.
+
+        :param gesture_type:    The gesture type.
+        :param enable:          Whether to enable or disable reporting.
+        """
+        self.__controller.enable_gesture(gesture_type, enable)
+
     def frame(self, history: int = 0) -> leap.Frame:
         """
         Get a frame of tracking data from the Leap.
@@ -64,3 +73,12 @@ class LeapController:
         offset: np.ndarray = self.from_leap_direction(leap_pos) / 1000.0
 
         return self.__camera.p() + offset
+
+    def is_gesture_enabled(self, gesture_type: leap.EGestureType) -> bool:
+        """
+        Get whether a particular gesture type is currently being reported or not.
+
+        :param gesture_type:    The gesture type.
+        :return:                True, if the gesture type is currently being reported, or False otherwise.
+        """
+        return self.__controller.is_gesture_enabled(gesture_type)
