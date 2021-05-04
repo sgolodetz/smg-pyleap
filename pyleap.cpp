@@ -60,8 +60,12 @@ PYBIND11_MODULE(pyleap, m)
   ;
 
   py::class_<Leap::Gesture>(m, "Gesture")
+    .def("duration", &Leap::Gesture::duration, py::call_guard<py::gil_scoped_release>())
+    .def("hands", &Leap::Gesture::hands, py::call_guard<py::gil_scoped_release>())
     .def("id", &Leap::Gesture::id, py::call_guard<py::gil_scoped_release>())
+    .def("is_valid", &Leap::Gesture::isValid, py::call_guard<py::gil_scoped_release>())
     .def("state", &Leap::Gesture::state, py::call_guard<py::gil_scoped_release>())
+    .def("to_string", &Leap::Gesture::toString, py::call_guard<py::gil_scoped_release>())
     .def("type", &Leap::Gesture::type, py::call_guard<py::gil_scoped_release>())
   ;
 
@@ -101,6 +105,8 @@ PYBIND11_MODULE(pyleap, m)
     .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
     .def("centre", &Leap::CircleGesture::center, py::call_guard<py::gil_scoped_release>())
     .def("normal", &Leap::CircleGesture::normal, py::call_guard<py::gil_scoped_release>())
+    .def("progress", &Leap::CircleGesture::progress, py::call_guard<py::gil_scoped_release>())
+    .def("radius", &Leap::CircleGesture::radius, py::call_guard<py::gil_scoped_release>())
   ;
 
   py::class_<Leap::SwipeGesture, Leap::Gesture>(m, "SwipeGesture")
