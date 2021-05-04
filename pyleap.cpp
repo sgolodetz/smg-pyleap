@@ -60,6 +60,8 @@ PYBIND11_MODULE(pyleap, m)
   ;
 
   py::class_<Leap::Gesture>(m, "Gesture")
+    .def("id", &Leap::Gesture::id, py::call_guard<py::gil_scoped_release>())
+    .def("state", &Leap::Gesture::state, py::call_guard<py::gil_scoped_release>())
     .def("type", &Leap::Gesture::type, py::call_guard<py::gil_scoped_release>())
   ;
 
@@ -79,11 +81,6 @@ PYBIND11_MODULE(pyleap, m)
     .def("__len__", &Leap::HandList::count, py::call_guard<py::gil_scoped_release>())
   ;
 
-  py::class_<Leap::SwipeGesture, Leap::Gesture>(m, "SwipeGesture")
-    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
-    .def("direction", &Leap::SwipeGesture::direction, py::call_guard<py::gil_scoped_release>())
-  ;
-
   py::class_<Leap::Vector>(m, "Vector")
     .def_property("x", [](const Leap::Vector& v) { return v.x; }, [](Leap::Vector& v, float x) { v.x = x; })
     .def_property("y", [](const Leap::Vector& v) { return v.y; }, [](Leap::Vector& v, float y) { v.y = y; })
@@ -96,6 +93,19 @@ PYBIND11_MODULE(pyleap, m)
       },
       py::call_guard<py::gil_scoped_release>()
     )
+  ;
+
+  // GESTURE SUBCLASSES
+
+  py::class_<Leap::CircleGesture, Leap::Gesture>(m, "CircleGesture")
+    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
+    .def("centre", &Leap::CircleGesture::center, py::call_guard<py::gil_scoped_release>())
+    .def("normal", &Leap::CircleGesture::normal, py::call_guard<py::gil_scoped_release>())
+  ;
+
+  py::class_<Leap::SwipeGesture, Leap::Gesture>(m, "SwipeGesture")
+    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
+    .def("direction", &Leap::SwipeGesture::direction, py::call_guard<py::gil_scoped_release>())
   ;
 
   // ENUMERATIONS
@@ -115,6 +125,13 @@ PYBIND11_MODULE(pyleap, m)
     .value("FT_RING", Leap::Finger::TYPE_RING)
     .value("FT_PINKY", Leap::Finger::TYPE_PINKY)
     .export_values()
+  ;
+
+  py::enum_<Leap::Gesture::State>(m, "EGestureState")
+    .value("GS_INVALID", Leap::Gesture::STATE_INVALID)
+    .value("GS_START", Leap::Gesture::STATE_START)
+    .value("GS_UPDATE", Leap::Gesture::STATE_UPDATE)
+    .value("GS_STOP", Leap::Gesture::STATE_STOP)
   ;
 
   py::enum_<Leap::Gesture::Type>(m, "EGestureType")
