@@ -32,11 +32,10 @@ class LeapController:
 
     def enable_gesture(self, gesture_type: leap.EGestureType, enable: bool = True) -> None:
         """
-        TODO
+        Enable or disable reporting of a particular gesture type.
 
-        :param gesture_type:    TODO
-        :param enable:          TODO
-        :return:                TODO
+        :param gesture_type:    The gesture type.
+        :param enable:          Whether to enable or disable reporting.
         """
         self.__controller.enable_gesture(gesture_type, enable)
 
@@ -77,9 +76,9 @@ class LeapController:
 
     def is_gesture_enabled(self, gesture_type: leap.EGestureType) -> bool:
         """
-        TODO
+        Get whether a particular gesture type is currently being reported or not.
 
-        :param gesture_type:    TODO
-        :return:                TODO
+        :param gesture_type:    The gesture type.
+        :return:                True, if the gesture type is currently being reported, or False otherwise.
         """
         return self.__controller.is_gesture_enabled(gesture_type)
