@@ -109,9 +109,18 @@ PYBIND11_MODULE(pyleap, m)
     .def("radius", &Leap::CircleGesture::radius, py::call_guard<py::gil_scoped_release>())
   ;
 
+  py::class_<Leap::KeyTapGesture, Leap::Gesture>(m, "KeyTapGesture")
+    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
+    .def("direction", &Leap::KeyTapGesture::direction, py::call_guard<py::gil_scoped_release>())
+    .def("position", &Leap::KeyTapGesture::position, py::call_guard<py::gil_scoped_release>())
+  ;
+
   py::class_<Leap::SwipeGesture, Leap::Gesture>(m, "SwipeGesture")
     .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
     .def("direction", &Leap::SwipeGesture::direction, py::call_guard<py::gil_scoped_release>())
+    .def("position", &Leap::SwipeGesture::position, py::call_guard<py::gil_scoped_release>())
+    .def("speed", &Leap::SwipeGesture::speed, py::call_guard<py::gil_scoped_release>())
+    .def("start_position", &Leap::SwipeGesture::startPosition, py::call_guard<py::gil_scoped_release>())
   ;
 
   // ENUMERATIONS
