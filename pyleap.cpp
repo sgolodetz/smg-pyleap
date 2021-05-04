@@ -115,6 +115,12 @@ PYBIND11_MODULE(pyleap, m)
     .def("position", &Leap::KeyTapGesture::position, py::call_guard<py::gil_scoped_release>())
   ;
 
+  py::class_<Leap::ScreenTapGesture, Leap::Gesture>(m, "ScreenTapGesture")
+    .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
+    .def("direction", &Leap::ScreenTapGesture::direction, py::call_guard<py::gil_scoped_release>())
+    .def("position", &Leap::ScreenTapGesture::position, py::call_guard<py::gil_scoped_release>())
+  ;
+
   py::class_<Leap::SwipeGesture, Leap::Gesture>(m, "SwipeGesture")
     .def(py::init<const Leap::Gesture&>(), py::call_guard<py::gil_scoped_release>())
     .def("direction", &Leap::SwipeGesture::direction, py::call_guard<py::gil_scoped_release>())
