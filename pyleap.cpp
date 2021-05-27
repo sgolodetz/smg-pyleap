@@ -79,6 +79,7 @@ PYBIND11_MODULE(pyleap, m)
     .def("fingers", &Leap::Hand::fingers, py::call_guard<py::gil_scoped_release>())
     .def("is_left", &Leap::Hand::isLeft, py::call_guard<py::gil_scoped_release>())
     .def("is_right", &Leap::Hand::isRight, py::call_guard<py::gil_scoped_release>())
+    .def("palm_position", &Leap::Hand::palmPosition, py::call_guard<py::gil_scoped_release>())
   ;
 
   py::class_<Leap::HandList>(m, "HandList")
@@ -154,6 +155,7 @@ PYBIND11_MODULE(pyleap, m)
     .value("GS_START", Leap::Gesture::STATE_START)
     .value("GS_UPDATE", Leap::Gesture::STATE_UPDATE)
     .value("GS_STOP", Leap::Gesture::STATE_STOP)
+    .export_values()
   ;
 
   py::enum_<Leap::Gesture::Type>(m, "EGestureType")
