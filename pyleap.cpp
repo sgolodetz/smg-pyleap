@@ -35,6 +35,7 @@ PYBIND11_MODULE(pyleap, m)
       py::arg("history") = 0, py::call_guard<py::gil_scoped_release>()
     )
     .def("is_gesture_enabled", &Leap::Controller::isGestureEnabled, py::call_guard<py::gil_scoped_release>())
+    .def("set_policy", &Leap::Controller::setPolicy, py::call_guard<py::gil_scoped_release>())
   ;
 
   py::class_<Leap::Finger>(m, "Finger")
@@ -161,6 +162,16 @@ PYBIND11_MODULE(pyleap, m)
     .value("GT_CIRCLE", Leap::Gesture::TYPE_CIRCLE)
     .value("GT_SCREEN_TAP", Leap::Gesture::TYPE_SCREEN_TAP)
     .value("GT_KEY_TAP", Leap::Gesture::TYPE_KEY_TAP)
+    .export_values()
+  ;
+
+  py::enum_<Leap::Controller::PolicyFlag>(m, "EPolicyFlag")
+    .value("POLICY_DEFAULT", Leap::Controller::POLICY_DEFAULT)
+    .value("POLICY_BACKGROUND_FRAMES", Leap::Controller::POLICY_BACKGROUND_FRAMES)
+    .value("POLICY_IMAGES", Leap::Controller::POLICY_IMAGES)
+    .value("POLICY_OPTIMIZE_HMD", Leap::Controller::POLICY_OPTIMIZE_HMD)
+    .value("POLICY_ALLOW_PAUSE_RESUME", Leap::Controller::POLICY_ALLOW_PAUSE_RESUME)
+    .value("POLICY_RAW_IMAGES", Leap::Controller::POLICY_RAW_IMAGES)
     .export_values()
   ;
 }

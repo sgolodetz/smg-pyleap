@@ -82,3 +82,11 @@ class LeapController:
         :return:                True, if the gesture type is currently being reported, or False otherwise.
         """
         return self.__controller.is_gesture_enabled(gesture_type)
+
+    def set_policy(self, policy: leap.EPolicyFlag) -> None:
+        """
+        Request a change in policy.
+
+        :param policy:  The policy to request.
+        """
+        self.__controller.set_policy(policy)

@@ -11,6 +11,7 @@ class Controller:
     def enable_gesture(self, gesture_type: EGestureType, enable: bool = True) -> None: ...
     def frame(self, history: int = 0) -> Frame: ...
     def is_gesture_enabled(self, gesture_type: EGestureType) -> bool: ...
+    def set_policy(self, policy: EPolicyFlag) -> None: ...
 
 class Finger:
     def bone(self, bone_type: EBoneType) -> Bone: ...
@@ -117,3 +118,13 @@ GT_SWIPE: EGestureType
 GT_CIRCLE: EGestureType
 GT_SCREEN_TAP: EGestureType
 GT_KEY_TAP: EGestureType
+
+class EPolicyFlag(int):
+    pass
+
+POLICY_DEFAULT: EPolicyFlag
+POLICY_BACKGROUND_FRAMES: EPolicyFlag
+POLICY_IMAGES: EPolicyFlag
+POLICY_OPTIMIZE_HMD: EPolicyFlag
+POLICY_ALLOW_PAUSE_RESUME: EPolicyFlag
+POLICY_RAW_IMAGES: EPolicyFlag
