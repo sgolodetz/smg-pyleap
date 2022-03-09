@@ -12,7 +12,7 @@ setuptools.setup(
     long_description="",  #long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sgolodetz/smg-pyleap",
-    packages=["smg.pyleap", "smg.pyleap.*"],
+    packages=["smg.pyleap"],
     include_package_data=True,
     install_requires=[
         "smg-opengl"

@@ -40,6 +40,7 @@ PYBIND11_MODULE(pyleap, m)
 
   py::class_<Leap::Finger>(m, "Finger")
     .def("bone", &Leap::Finger::bone, py::call_guard<py::gil_scoped_release>())
+    .def("id", &Leap::Finger::id, py::call_guard<py::gil_scoped_release>())
     .def("direction", &Leap::Finger::direction, py::call_guard<py::gil_scoped_release>())
     .def("tip_position", &Leap::Finger::tipPosition, py::call_guard<py::gil_scoped_release>())
     .def("type", &Leap::Finger::type, py::call_guard<py::gil_scoped_release>())
@@ -48,6 +49,8 @@ PYBIND11_MODULE(pyleap, m)
   py::class_<Leap::FingerList>(m, "FingerList")
     .def("__getitem__", &Leap::FingerList::operator[], py::call_guard<py::gil_scoped_release>())
     .def("__len__", &Leap::FingerList::count, py::call_guard<py::gil_scoped_release>())
+    .def("leftmost", &Leap::FingerList::leftmost, py::call_guard<py::gil_scoped_release>())
+    .def("rightmost", &Leap::FingerList::rightmost, py::call_guard<py::gil_scoped_release>())
   ;
 
   py::class_<Leap::Frame>(m, "Frame")
