@@ -83,6 +83,7 @@ PYBIND11_MODULE(pyleap, m)
     .def("is_left", &Leap::Hand::isLeft, py::call_guard<py::gil_scoped_release>())
     .def("is_right", &Leap::Hand::isRight, py::call_guard<py::gil_scoped_release>())
     .def("palm_position", &Leap::Hand::palmPosition, py::call_guard<py::gil_scoped_release>())
+    .def("palm_velocity", &Leap::Hand::palmVelocity, py::call_guard<py::gil_scoped_release>())
   ;
 
   py::class_<Leap::HandList>(m, "HandList")
