@@ -2,15 +2,13 @@
 # UseLeap.cmake #
 #################
 
-IF(MSVC_IDE)
-  FIND_PATH(LEAP_ROOT head_sha.txt HINTS "D:/ultraleap/LeapDeveloperKit_3.2.1+45911_win/LeapSDK")
+FIND_PATH(LEAP_ROOT head_sha.txt HINTS "$ENV{SMGLIB_LEAP_ROOT_DIR}")
+
+IF(WIN32)
   FIND_LIBRARY(LEAP_LIBRARY Leap HINTS "${LEAP_ROOT}/lib/x64")
 ELSEIF(APPLE)
-  FIND_PATH(LEAP_ROOT head_sha.txt HINTS ~/Downloads/LeapDeveloperKit_2.2.1+24116_mac/LeapSDK)
   FIND_LIBRARY(LEAP_LIBRARY Leap HINTS "${LEAP_ROOT}/lib")
 ELSEIF("${CMAKE_SYSTEM}" MATCHES "Linux")
-  FIND_PATH(LEAP_ROOT head_sha.txt HINTS ~/software/LeapDeveloperKit_2.2.1+24116_linux/LeapSDK
-                                         ~/Software/LeapDeveloperKit_2.2.1+24116_linux/LeapSDK)
   FIND_LIBRARY(LEAP_LIBRARY Leap HINTS "${LEAP_ROOT}/lib/x64")
 ENDIF()
 

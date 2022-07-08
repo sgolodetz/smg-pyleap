@@ -2,11 +2,16 @@
 # LinkLeap.cmake #
 ##################
 
-TARGET_LINK_LIBRARIES(${targetname} ${LEAP_LIBRARY})
-IF(MSVC_IDE)
-  ADD_CUSTOM_COMMAND(TARGET ${targetname} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${LEAP_ROOT}/lib/x64/Leap.dll" "$<TARGET_FILE_DIR:${targetname}>")
+TARGET_LINK_LIBRARIES(${targetname} PRIVATE ${LEAP_LIBRARY})
+
+IF(WIN32)
+  SET(LEAP_RUNTIMELIBS "${LEAP_ROOT}/lib/x64/Leap.dll")
 ELSEIF(APPLE)
-  ADD_CUSTOM_COMMAND(TARGET ${targetname} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${LEAP_ROOT}/lib/libLeap.dylib" "$<TARGET_FILE_DIR:${targetname}>")
+  SET(LEAP_RUNTIMELIBS "${LEAP_ROOT}/lib/libLeap.dylib")
 ELSE()
-  TARGET_LINK_LIBRARIES(${targetname} z)
+  TARGET_LINK_LIBRARIES(${targetname} PRIVATE z)
 ENDIF()
+
+FOREACH(RUNTIMELIB ${LEAP_RUNTIMELIBS})
+  ADD_CUSTOM_COMMAND(TARGET ${targetname} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${RUNTIMELIB} "$<TARGET_FILE_DIR:${targetname}>")
+ENDFOREACH()

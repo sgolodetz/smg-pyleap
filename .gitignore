@@ -1,6 +1,9 @@
 .idea/
 __pycache__/
+_skbuild/
 build/
 dist/
-smg/pyleap/cpp/
+smg/pyleap/cpp/*.dll
+smg/pyleap/cpp/*.lib
+smg/pyleap/cpp/*.pyd
 *.egg-info/
