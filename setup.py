@@ -1,7 +1,7 @@
 import skbuild
 
-# with open("README.md", "r") as fh:
-#     long_description = fh.read()
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
 skbuild.setup(
     name="smg-pyleap",
@@ -9,7 +9,7 @@ skbuild.setup(
     author="Stuart Golodetz",
     author_email="stuart.golodetz@cs.ox.ac.uk",
     description="Python bindings for the Leap Motion",
-    long_description="",  #long_description,
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sgolodetz/smg-pyleap",
     packages=["smg.pyleap", "smg.pyleap.cpp"],
